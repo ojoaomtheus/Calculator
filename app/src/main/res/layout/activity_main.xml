@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btn_history"
+        android:layout_margin="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:background="@drawable/history_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_result_calculation"
         android:layout_width="match_parent"
@@ -285,8 +295,6 @@
                 android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
-
-
 
 
 

@@ -1,5 +1,6 @@
 package com.example.calculator
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.trackPipAnimationHintView
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.calculator.databinding.ActivityMainBinding
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,36 +48,47 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnEquals.setOnClickListener { calculateResult() }
 
-        binding.btnAc.setOnClickListener {
-            clearAll()
-        }
+        binding.btnAc.setOnClickListener { clearAll() }
 
         binding.btnDropOne.setOnClickListener {
 
-
-             if (currentNumber.isNotEmpty()) {
+            if (currentNumber.isNotEmpty()) {
                 currentNumber = currentNumber.dropLast(1)
                 calculationString = calculationString.dropLast(1)
                 binding.tvResult.text = if (currentNumber.isEmpty()) "0" else calculationString
 
-            } else if(operation.isNotEmpty() && calculationString.isNotEmpty()){
+            } else if (operation.isNotEmpty() && calculationString.isNotEmpty()) {
                 operation = ""
                 calculationString = calculationString.trimEnd().dropLast(1).trimEnd()
-                binding.tvResult.text = calculationString.ifEmpty{"0"}
+                binding.tvResult.text = calculationString.ifEmpty { "0" }
 
-            }else if (isCalculationDone){
+            } else if (isCalculationDone) {
                 clearAll()
-             }
+            }
         }
+
+            binding.btnHistory.setOnClickListener {
+                val intent = Intent(this, HistoryActivity::class.java)
+                intent.putStringArrayListExtra("LIST_OF_CALCULATION", ArrayList(calculationHistory))
+                startActivity(intent)
+            }
     }
 
     private fun appendNumber(number: String) {
+        if (isCalculationDone) {
+            clearAll()
+            isCalculationDone = false
+        }
         currentNumber += number
         calculationString += number
         binding.tvResult.text = calculationString
+
     }
 
     private fun setOperation(op: String) {
+        if (isCalculationDone) {
+            isCalculationDone = false
+        }
         if (currentNumber.isNotEmpty() || previousNumber.isNotEmpty()) {
             if (currentNumber.isNotEmpty()) {
                 previousNumber = currentNumber
@@ -141,5 +154,6 @@ class MainActivity : AppCompatActivity() {
         binding.tvResultCalculation.text = ""
     }
 }
+
 
 
